@@ -5,7 +5,7 @@ from .serializers import BoardSrz
 from .models import Board
 
 class BoardViewSet(viewsets.ModelViewSet):
-    serializer_class = [BoardSrz]
+    serializer_class = BoardSrz
     permission_classes = [IsAuthenticated]
 
 

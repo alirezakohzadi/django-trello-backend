@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Board(models.Model):
-    owner = models.models.ForeignKey(User, related_name="boards", on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, related_name="boards", on_delete=models.CASCADE)
     title = models.CharField(max_length=225)
 
 

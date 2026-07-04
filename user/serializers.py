@@ -30,3 +30,9 @@ class UserCreateSrz(serializers.ModelSerializer):
         return user
     
     
+
+
+
+class UserLoginSrz(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()

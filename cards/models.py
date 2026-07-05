@@ -1,3 +1,11 @@
 from django.db import models
+from lists.models import List
 
-# Create your models here.
+
+
+
+class Card(models.Model):
+    list = models.ForeignKey(List, on_delete=models.CASCADE)
+    title = models.CharField(max_length=250)
+    description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=False)

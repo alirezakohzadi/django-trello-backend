@@ -1,7 +1,20 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
+from lists.serializers import ListSrz
 
+from boards.models import Board
+
+class UserSrz(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+        ]
 
 class UserCreateSrz(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True)
@@ -31,6 +44,27 @@ class UserCreateSrz(serializers.ModelSerializer):
     
     
 
+class BoardSrz(serializers.ModelSerializer):
+    owner = UserSrz(read_only=True)
+
+    members = UserSrz(
+        many=True,
+        read_only=True
+    )
+
+    member_ids = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(),
+        many=True,
+        write_only=True,
+        source="members"
+    )
+
+    lists = ListSrz(many=True, read_only=True)
+
+    class Meta:
+        model = Board
+        fields = "__all__"
+        read_only_fields = ["owner"]
 
 
 class UserLoginSrz(serializers.Serializer):

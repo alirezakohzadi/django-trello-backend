@@ -18,9 +18,21 @@ class CardViewSet(viewsets.ModelViewSet):
         ).order_by("-created_at")
 
     def perform_create(self, serializer):
-        list_obj = serializer.validated_data["list", serializer.instance.list]
+        list_obj = serializer.validated_data["list"]
 
 
         if list_obj.board.owner != self.request.user:
             raise PermissionDenied("شما اجازه افزودن کارت به این لیست را ندارید.")
+        serializer.save()
+
+        
+    def perform_update(self, serializer):
+        list_obj = serializer.validated_data.get(
+            "list",
+            serializer.instance.list
+        )
+
+        if list_obj.board.owner != self.request.user:
+            raise PermissionDenied("شما اجازه انتقال کارت به این لیست را ندارید.")
+
         serializer.save()

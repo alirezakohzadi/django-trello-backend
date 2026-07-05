@@ -18,7 +18,7 @@ class CardViewSet(viewsets.ModelViewSet):
         ).order_by("-created_at")
 
     def perform_create(self, serializer):
-        list_obj = serializer.validated_data["list"]
+        list_obj = serializer.validated_data["list", serializer.instance.list]
 
 
         if list_obj.board.owner != self.request.user:

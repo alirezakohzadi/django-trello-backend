@@ -24,5 +24,6 @@ urlpatterns = [
     path('lists/', include("lists.urls")),
     path('cards/', include("cards.urls")),
     path('comments/', include("comments.urls")),
+    path('labels/', include("labels.urls")),
     
 ]

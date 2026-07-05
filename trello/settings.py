@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "user",
     "boards",
     "cards",
+    "labels",
     "lists",
     "comments",
     "rest_framework",

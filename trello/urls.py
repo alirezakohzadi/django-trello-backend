@@ -23,5 +23,6 @@ urlpatterns = [
     path('boards/', include("boards.urls")),
     path('lists/', include("lists.urls")),
     path('cards/', include("cards.urls")),
+    path('comments/', include("comments.urls")),
     
 ]

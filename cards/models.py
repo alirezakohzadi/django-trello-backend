@@ -5,6 +5,7 @@ from lists.models import List
 
 
 class Card(models.Model):
+    labels = models.ManyToManyField("labels.Label", related_name="cards", blank=True)
     list = models.ForeignKey(List, related_name="cards" ,on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     description = models.TextField(blank=True)

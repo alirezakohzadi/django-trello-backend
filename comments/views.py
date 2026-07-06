@@ -5,6 +5,7 @@ from rest_framework.exceptions import PermissionDenied
 
 from .models import Comment
 from .serializers import CommentSrz
+from activities.models import Activity
 
 
 
@@ -20,6 +21,10 @@ class CommentViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         card = serializer.validated_data["card"]
+        Activity.objects.create(
+            user=self.request.user,
+            board=card.list.board,
+            action="Added a comment")
 
 
 

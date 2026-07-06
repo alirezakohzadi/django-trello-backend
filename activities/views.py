@@ -14,8 +14,7 @@ class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
     filterset_fields = ["board", "user"]
     ordering_fields = ["created_at"]
-
-
+    search_fields = ["action"]
 
     def get_queryset(self):
         return Activity.objects.filter(

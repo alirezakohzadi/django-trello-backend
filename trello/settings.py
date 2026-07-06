@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "user",
     "boards",
     "cards",
+    "activities",
     "labels",
     "attachments",
     "lists",

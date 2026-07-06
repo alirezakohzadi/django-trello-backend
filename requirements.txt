@@ -4,3 +4,4 @@ redis
 djangorestframework
 djangorestframework-simplejwt
 django-filter
+django_redis

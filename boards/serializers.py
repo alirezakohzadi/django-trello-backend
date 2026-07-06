@@ -25,3 +25,10 @@ class BoardSrz(serializers.ModelSerializer):
         model = Board
         fields = "__all__"
         read_only_fields = ["owner"]
+
+
+
+class BoardMiniSrz(serializers.ModelSerializer):
+    class Meta:
+        model = Board
+        fields = ["id", "title"]

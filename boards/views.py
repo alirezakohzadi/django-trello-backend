@@ -1,10 +1,13 @@
-from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
+
+from django.shortcuts import render
+from django.db.models import Q
+
+
 from .serializers import BoardSrz
 from .models import Board
-from django.db.models import Q
 
 
 
@@ -13,6 +16,9 @@ from django.db.models import Q
 class BoardViewSet(viewsets.ModelViewSet):
     serializer_class = BoardSrz
     permission_classes = [IsAuthenticated]
+
+    search_fields = ["title"]
+    ordering_fields = ["title"]
 
 
     def get_queryset(self):

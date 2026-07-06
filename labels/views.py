@@ -1,6 +1,11 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.filters import SearchFilter, OrderingFilter
+
+
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 from .models import Label
 from .seializers import LabelSrz
@@ -10,6 +15,9 @@ from activities.models import Activity
 class LabelViewSet(viewsets.ModelViewSet):
     serializer_class = LabelSrz
     permission_classes = [IsAuthenticated]
+    search_fields = ["title"]
+    filterset_fields = ["board"]
+
 
     def get_queryset(self):
         return Label.objects.filter(

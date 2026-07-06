@@ -7,12 +7,14 @@ from .models import Comment
 from .serializers import CommentSrz
 from activities.models import Activity
 
-
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSrz
     permission_classes = [IsAuthenticated]
-
+    ordering_fields = ["created_at"]
+    filterset_fields = ["card"]
 
     def get_queryset(self):
         return Comment.objects.filter(

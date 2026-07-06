@@ -28,6 +28,7 @@ urlpatterns = [
     path('comments/', include("comments.urls")),
     path('labels/', include("labels.urls")),
     path('attachments/', include("attachments.urls")),
+    path('activities/', include("activities.urls")),
     
 ]
 

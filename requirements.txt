@@ -3,3 +3,4 @@ psycopg2-binary
 redis
 djangorestframework
 djangorestframework-simplejwt
+django-filter

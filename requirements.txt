@@ -5,3 +5,8 @@ djangorestframework
 djangorestframework-simplejwt
 django-filter
 django-redis
+
+
+
+celery
+django-celery-beat

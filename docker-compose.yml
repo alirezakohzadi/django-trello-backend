@@ -5,7 +5,6 @@ services:
   django:
     build: .
     container_name: django_app
-
     command: python manage.py runserver 0.0.0.0:8000
 
     volumes:
@@ -13,6 +12,29 @@ services:
 
     ports:
       - "8000:8000"
+
+    depends_on:
+      - db
+      - redis
+
+    environment:
+      DB_NAME: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: db
+      DB_PORT: 5432
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+  celery:
+    build: .
+    container_name: celery_worker
+
+    command: celery -A trello worker -l info
+
+    volumes:
+      - .:/app
 
     depends_on:
       - db

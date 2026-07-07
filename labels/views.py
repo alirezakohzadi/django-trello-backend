@@ -9,8 +9,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Label
 from .seializers import LabelSrz
-from activities.models import Activity
-
+from activities.tasks import create_activity
 
 class LabelViewSet(viewsets.ModelViewSet):
     serializer_class = LabelSrz
@@ -34,8 +33,21 @@ class LabelViewSet(viewsets.ModelViewSet):
 
         label = serializer.save()
 
-        Activity.objects.create(
-            user=self.request.user,
-            board=board,
-            action=f"Created label '{label.title}'"
+        create_activity.delay(
+            self.request.user.id,
+            label.board.id,
+            f"Created label '{label.title}'"
+        )
+
+
+    def perform_destroy(self, instance):
+        title = instance.title
+        board_id = instance.board.id
+
+        instance.delete()
+
+        create_activity.delay(
+            self.request.user.id,
+            board_id,
+            f"Deleted label '{title}'"
         )

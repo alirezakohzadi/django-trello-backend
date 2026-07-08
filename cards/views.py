@@ -11,9 +11,18 @@ from django.core.cache import cache
 from activities.tasks import create_activity
 from .serializers import CardSrz
 from .models import Card
+from drf_spectacular.utils import extend_schema
+
+
+@extend_schema(
+    tags=["Cards"],
+    description="Manage project cards"
+)
 
 
 class CardViewSet(viewsets.ModelViewSet):
+
+
     serializer_class = CardSrz
     permission_classes = [IsAuthenticated]
 

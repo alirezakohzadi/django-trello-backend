@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.middleware.csrf import get_token
 from django.contrib.auth import authenticate
+from django.db import transaction
+
 from rest_framework import views
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,6 +10,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
+from .tasks import send_welcome_email
 from .serializers import UserCreateSrz, UserLoginSrz
 
 class CreateUserView(views.APIView):
@@ -20,7 +23,10 @@ class CreateUserView(views.APIView):
     def post(self ,request):
         serializer = UserCreateSrz(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            user = serializer.save()
+            transaction.on_commit(
+                lambda: send_welcome_email.delay(user.id)
+            )
             return Response({"maessage": "user created succesfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     

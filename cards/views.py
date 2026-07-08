@@ -50,8 +50,7 @@ class CardViewSet(viewsets.ModelViewSet):
 
 
     def list(self, request, *args, **kwargs):
-        cache_key = f"cards_{request.user.id}"
-
+        cache_key = f"cards_{request.user.id}_{request.get_full_path()}"
 
         data = cache.get(cache_key)
 

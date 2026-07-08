@@ -52,9 +52,7 @@ services:
 
   db:
     image: postgres:17
-
     container_name: postgres_db
-
     restart: always
 
     environment:
@@ -63,7 +61,7 @@ services:
       POSTGRES_PASSWORD: postgres
 
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
     volumes:
       - postgres_data:/var/lib/postgresql/data

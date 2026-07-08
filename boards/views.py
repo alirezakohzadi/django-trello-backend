@@ -10,7 +10,7 @@ from django.db.models import Q
 
 from .serializers import BoardSrz
 from .models import Board
-
+from activities.tasks import create_activity
 
 
 
@@ -61,9 +61,15 @@ class BoardViewSet(viewsets.ModelViewSet):
 
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        board = serializer.save(owner=self.request.user)
+
         cache.delete(f"boards_{self.request.user.id}")
 
+        create_activity.delay(
+            self.request.user.id,
+            board.id,
+            f"Created board '{board.title}'"
+        )
 
 
 
@@ -71,17 +77,35 @@ class BoardViewSet(viewsets.ModelViewSet):
         board = self.get_object()
 
         if board.owner != self.request.user:
-            raise PermissionDenied("فقط مالک برد می‌تواند آن را ویرایش کند.")
+            raise PermissionDenied(
+                "فقط مالک برد می‌تواند آن را ویرایش کند."
+            )
 
-        serializer.save()
+        board = serializer.save()
+
         cache.delete(f"boards_{self.request.user.id}")
 
-
-        
-
+        create_activity.delay(
+            self.request.user.id,
+            board.id,
+            f"Updated board '{board.title}'"
+        )
+            
     def perform_destroy(self, instance):
         if instance.owner != self.request.user:
-            raise PermissionDenied("فقط مالک برد می‌تواند آن را حذف کند.")
+            raise PermissionDenied(
+                "فقط مالک برد می‌تواند آن را حذف کند."
+            )
+
+        title = instance.title
+        board_id = instance.id
 
         instance.delete()
+
         cache.delete(f"boards_{self.request.user.id}")
+
+        create_activity.delay(
+            self.request.user.id,
+            board_id,
+            f"Deleted board '{title}'"
+        )

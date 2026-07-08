@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "lists",
     "comments",
     "rest_framework",
+    "drf_spectacular",
     "django_filters",
 ]
 
@@ -156,24 +157,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-
-
-REST_FRAMEWORK = {
-
-}
-
-
-
-
-
-
-
-
-
-
 # REST_FRAME_WORK
 
 REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": 
+        "drf_spectacular.openapi.AutoSchema",
    
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -189,10 +177,46 @@ REST_FRAMEWORK = {
         "rest_framework.pagination.PageNumberPagination",
 
     "PAGE_SIZE": 10,
- 
 }
 
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Trello Clone API",
+    "DESCRIPTION": """
+    Project Management Backend API.
 
+    Features:
+    - JWT Authentication
+    - Boards Management
+    - Lists
+    - Cards
+    - Comments
+    - Labels
+    - Attachments
+    - Activity Logs
+    - Celery Background Tasks
+    - Redis Cache
+    """,
+    "VERSION": "1.0.0",
+
+
+
+
+      "SECURITY": [
+        {
+            "jwtAuth": []
+        }
+    ],
+
+    "COMPONENTS": {
+        "securitySchemes": {
+            "jwtAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+            }
+        }
+    },
+}
 
 SIMPLE_JWT = {
 

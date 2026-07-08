@@ -38,65 +38,74 @@ jobs:
 
 
       redis:
+
         image: redis:7
 
         ports:
           - 6379:6379
 
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
 
 
     steps:
 
-
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-
-        with:
-          python-version: "3.13"
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
 
 
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
+    - name: Setup Python
+
+      uses: actions/setup-python@v5
+
+      with:
+        python-version: "3.13"
 
 
 
-      - name: Run migrations
-        env:
-          DB_NAME: postgres
-          DB_USER: postgres
-          DB_PASSWORD: postgres
-          DB_HOST: localhost
-          DB_PORT: 5432
+    - name: Install packages
 
-          REDIS_URL: redis://localhost:6379/1
+      run: |
 
-        run: |
-          python manage.py migrate
+        pip install --upgrade pip
+
+        pip install -r requirements.txt
 
 
 
-      - name: Run tests
-        env:
-          DB_NAME: postgres
-          DB_USER: postgres
-          DB_PASSWORD: postgres
-          DB_HOST: localhost
-          DB_PORT: 5432
+    - name: Run migrations
 
-          REDIS_URL: redis://localhost:6379/1
+      env:
 
-        run: |
-          python manage.py test
+        DB_NAME: postgres
+        DB_USER: postgres
+        DB_PASSWORD: postgres
+        DB_HOST: localhost
+        DB_PORT: 5432
+
+        REDIS_HOST: localhost
+        REDIS_PORT: 6379
+
+
+      run: |
+
+        python manage.py migrate
+
+
+
+    - name: Run Django tests
+
+      env:
+
+        DB_NAME: postgres
+        DB_USER: postgres
+        DB_PASSWORD: postgres
+        DB_HOST: localhost
+        DB_PORT: 5432
+
+        REDIS_HOST: localhost
+        REDIS_PORT: 6379
+
+
+      run: |
+
+        python manage.py test

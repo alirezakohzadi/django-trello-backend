@@ -5,7 +5,12 @@ from rest_framework.exceptions import PermissionDenied
 from activities.tasks import create_activity
 from .models import Attachment
 from .serializers import AttachmentSrz
+from drf_spectacular.utils import extend_schema
 
+
+@extend_schema(
+    tags=["Attachments"]
+)
 
 class AttachmentViewSet(viewsets.ModelViewSet):
     serializer_class = AttachmentSrz

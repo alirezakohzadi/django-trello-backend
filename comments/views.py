@@ -8,7 +8,12 @@ from django_filters.rest_framework import DjangoFilterBackend
 from activities.tasks import create_activity
 from .models import Comment
 from .serializers import CommentSrz
+from drf_spectacular.utils import extend_schema
 
+
+@extend_schema(
+    tags=["Comments"]
+)
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSrz

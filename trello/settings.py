@@ -106,34 +106,17 @@ WSGI_APPLICATION = 'trello.wsgi.application'
 #         "PORT": "5432",
 #     }
 # }
+import os
+
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-
-        "NAME": os.getenv(
-            "DB_NAME",
-            "postgres"
-        ),
-
-        "USER": os.getenv(
-            "DB_USER",
-            "postgres"
-        ),
-
-        "PASSWORD": os.getenv(
-            "DB_PASSWORD",
-            "postgres"
-        ),
-
-        "HOST": os.getenv(
-            "DB_HOST",
-            "db"
-        ),
-
-        "PORT": os.getenv(
-            "DB_PORT",
-            "5432"
-        ),
+        "NAME": os.environ.get("DB_NAME", "postgres"),
+        "USER": os.environ.get("DB_USER", "postgres"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", "postgres"),
+        "HOST": os.environ.get("DB_HOST", "localhost"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
     }
 }
 
@@ -265,17 +248,15 @@ SIMPLE_JWT = {
 #     }
 # }
 CACHES = {
+
     "default": {
+
         "BACKEND": "django_redis.cache.RedisCache",
 
-        "LOCATION": os.getenv(
-            "REDIS_URL",
-            "redis://redis:6379/1"
-        ),
+        "LOCATION": f"redis://{os.environ.get('REDIS_HOST','localhost')}:{os.environ.get('REDIS_PORT','6379')}/1",
 
         "OPTIONS": {
-            "CLIENT_CLASS":
-            "django_redis.client.DefaultClient",
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
     }
 }
@@ -304,3 +285,6 @@ CELERY_TIMEZONE = "Asia/Tehran"
 
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_EAGER_PROPAGATES = True

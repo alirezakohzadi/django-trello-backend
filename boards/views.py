@@ -12,7 +12,12 @@ from .serializers import BoardSrz
 from .models import Board
 from activities.tasks import create_activity
 
+from drf_spectacular.utils import extend_schema
 
+
+@extend_schema(
+    tags=["Bords"]
+)
 
 class BoardViewSet(viewsets.ModelViewSet):
     serializer_class = BoardSrz

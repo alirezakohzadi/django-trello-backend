@@ -10,7 +10,12 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import Label
 from .seializers import LabelSrz
 from activities.tasks import create_activity
+from drf_spectacular.utils import extend_schema
 
+
+@extend_schema(
+    tags=["Labels"]
+)
 class LabelViewSet(viewsets.ModelViewSet):
     serializer_class = LabelSrz
     permission_classes = [IsAuthenticated]

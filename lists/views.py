@@ -3,7 +3,12 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import List
 from .serializers import ListSrz
+from drf_spectacular.utils import extend_schema
 
+
+@extend_schema(
+    tags=["Lists"]
+)
 
 class ListViewSet(viewsets.ModelViewSet):
     serializer_class = ListSrz

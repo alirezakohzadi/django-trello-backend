@@ -109,11 +109,31 @@ WSGI_APPLICATION = 'trello.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME", "postgres"),
-        "USER": os.getenv("DB_USER", "postgres"),
-        "PASSWORD": os.getenv("DB_PASSWORD", "postgres"),
-        "HOST": os.getenv("DB_HOST", "db"),
-        "PORT": os.getenv("DB_PORT", "5432"),
+
+        "NAME": os.getenv(
+            "DB_NAME",
+            "postgres"
+        ),
+
+        "USER": os.getenv(
+            "DB_USER",
+            "postgres"
+        ),
+
+        "PASSWORD": os.getenv(
+            "DB_PASSWORD",
+            "postgres"
+        ),
+
+        "HOST": os.getenv(
+            "DB_HOST",
+            "db"
+        ),
+
+        "PORT": os.getenv(
+            "DB_PORT",
+            "5432"
+        ),
     }
 }
 
@@ -235,16 +255,30 @@ SIMPLE_JWT = {
 }
 
 
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://redis:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379/1",
+
+        "LOCATION": os.getenv(
+            "REDIS_URL",
+            "redis://redis:6379/1"
+        ),
+
         "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
+            "CLIENT_CLASS":
+            "django_redis.client.DefaultClient",
+        },
     }
 }
-
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
